@@ -1,0 +1,62 @@
+@App Folder
+root/app
+- Routing system of the application
+- Guidelines
+  -> Separated pages in Route Groups for readability
+  -> Routes and Dynamic Routes with transparent naming
+
+
+@Components Folder
+root/components
+- Reusable components throughout the application
+- Guidelines
+  -> Realize a single task
+  -> Isolated and with few if any, dependencies
+- Example
+  -> A custom type text input to put on custom forms
+
+
+@Constants Folder
+root/constants
+- Reusable Values that gets called throughout the application
+- Guidelines
+  -> 
+- Example
+  -> Nav Bar with 5 Link on the Menu, each one has a Title, URL, we keep a array of objects of those URL's
+
+
+@Context Folder
+root/context
+- Contexts that will affect the whole application directly
+- Example
+  -> Dark mode configurations, state and switch
+
+
+@Lib Folder
+root/lib
+- Stores server-side actions and other backend functions
+
+
+@Lib Actions Folder
+root/lib/actions
+- Stores actions that act as a connection between the front-end and the back-end
+
+
+@Database Folder
+root/database
+- Manages the database functions, Models and more
+
+
+@Public Folder
+root/public
+- Store the Assets
+
+
+@styles Folder
+root/styles
+- Store the CSS and Tailwind configurations values
+
+
+@Types Folder
+root/types
+- Typescript types
