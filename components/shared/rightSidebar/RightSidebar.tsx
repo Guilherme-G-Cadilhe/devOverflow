@@ -26,27 +26,27 @@ const questions = [
 ];
 const tags = [
   {
-    _id: 1,
+    _id: "1",
     name: "NextJS",
     totalQuestions: 5,
   },
   {
-    _id: 2,
+    _id: "2",
     name: "React",
     totalQuestions: 3,
   },
   {
-    _id: 3,
+    _id: "3",
     name: "CSS",
     totalQuestions: 8,
   },
   {
-    _id: 4,
+    _id: "4",
     name: "HTML",
     totalQuestions: 10,
   },
   {
-    _id: 5,
+    _id: "5",
     name: "NodeJS",
     totalQuestions: 13,
   },
