@@ -40,7 +40,7 @@ function QuestionCard({ _id, title, tags, author, createdAt, upvotes, answers, v
       </div>
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUrl="/assets/icons/avatar.svg"
+          imgUrl={author.picture}
           href={`/profile/${author._id}`}
           alt="User"
           value={author.name}
