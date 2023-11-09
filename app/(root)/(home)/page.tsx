@@ -5,81 +5,12 @@ import Filter from "@/components/shared/filter/Filter";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { CHomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-const questions = [
-  {
-    _id: "1",
-    title: "How to create a new post?",
-    tags: [
-      {
-        _id: "1",
-        name: "NextJS",
-      },
-      {
-        _id: "2",
-        name: "React",
-      },
-    ],
-    author: {
-      _id: "123",
-      name: "John Doe",
-      picture: "john-doe.jpg",
-    },
-    createdAt: new Date("2023-09-01T10:00:00.000Z"),
-    upvotes: 1,
-    views: 3,
-    answers: [],
-  },
-  {
-    _id: "2",
-    title: "How to implement nodejs native runtime on Next?",
-    tags: [
-      {
-        _id: "3",
-        name: "Node.js",
-      },
-      {
-        _id: "2",
-        name: "React",
-      },
-    ],
-    author: {
-      _id: "124",
-      name: "Jane Smith",
-      picture: "jane-smith.jpg",
-    },
-    createdAt: new Date("2023-11-01T10:00:00.000Z"),
-    upvotes: 50500000,
-    views: 324645,
-    answers: [],
-  },
-  {
-    _id: "3",
-    title: "How to use Next Router",
-    tags: [
-      {
-        _id: "1",
-        name: "NextJS",
-      },
-      {
-        _id: "2",
-        name: "React",
-      },
-    ],
-    author: {
-      _id: "125",
-      name: "Alice Johnson",
-      picture: "alice-johnson.jpg",
-    },
-    createdAt: new Date("2021-09-01T10:00:00.000Z"),
-    upvotes: 2,
-    views: 5,
-    answers: [{}],
-  },
-];
+export default async function Home() {
+  const resultQuery = await getQuestions({});
 
-export default function Home() {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -108,8 +39,8 @@ export default function Home() {
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => (
+        {resultQuery.questions.length > 0 ? (
+          resultQuery.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
