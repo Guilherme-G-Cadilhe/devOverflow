@@ -1,9 +1,13 @@
 import Answer from "@/components/forms/Answer";
+import AllAnswers from "@/components/shared/AllAnswers";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
+import Votes from "@/components/shared/Votes";
 import RenderTag from "@/components/shared/renderTag/RenderTag";
 import { getQuestionById } from "@/lib/actions/question.action";
+import { getUserByClerkId } from "@/lib/actions/user.action";
 import { formatNumberWithExtension, getTimesamp } from "@/lib/utils";
+import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,9 +19,15 @@ const QuestionDetails = async ({
   searchParams: { [key: string]: string };
 }) => {
   const { id } = params;
-  console.log("searchParams :>> ", searchParams);
+
+  const { userId: clerkId } = auth();
+
+  let mongoUser;
+  if (clerkId) {
+    mongoUser = await getUserByClerkId({ userId: clerkId });
+  }
   const result = await getQuestionById({ questionId: id });
-  console.log("result :>> ", result);
+
   return (
     <>
       <div className="flex-start w-full flex-col">
@@ -26,7 +36,18 @@ const QuestionDetails = async ({
             <Image className="rounded-full" src={result.author.picture} alt="profile" width={23} height={23} />
             <p className="paragraph-semibold text-dark300_light700">{result.author.name}</p>
           </Link>
-          <div className="flex justify-end">VOTING</div>
+          <div className="flex justify-end">
+            <Votes
+              type="Question"
+              itemId={JSON.stringify(result._id)}
+              userId={JSON.stringify(mongoUser?._id)}
+              upvotes={result.upvotes.length}
+              hasupVoted={result.upvotes.includes(mongoUser?._id)}
+              downvotes={result.downvotes.length}
+              hasdownVoted={result.downvotes.includes(mongoUser?._id)}
+              hasSaved={mongoUser.saved.includes(result?._id)}
+            />
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">{result.title}</h2>
       </div>
@@ -64,7 +85,13 @@ const QuestionDetails = async ({
         ))}
       </div>
 
-      <Answer />
+      <AllAnswers questionId={result._id} userId={mongoUser._id} totalAnswers={result.answers.length} />
+
+      <Answer
+        question={result.content}
+        questionId={JSON.stringify(result._id)}
+        authorId={JSON.stringify(mongoUser._id)}
+      />
     </>
   );
 };
