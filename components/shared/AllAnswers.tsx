@@ -3,7 +3,7 @@ import Filter from "./filter/Filter";
 import { getAnswers } from "@/lib/actions/answer.action";
 import Link from "next/link";
 import Image from "next/image";
-import { getTimesamp } from "@/lib/utils";
+import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
 
@@ -43,7 +43,7 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Al
                   <div className="flex flex-col sm:flex-row sm:items-center">
                     <p className="body-semibold text-dark300_light700">{answer.author.name} </p>
                     <p className="small-regular text-light400_light500 ml-0.5 mt-0.5 line-clamp-1">
-                      <span className="max-sm:hidden"> - </span> answered {getTimesamp(answer.createdAt)}
+                      <span className="max-sm:hidden"> - </span> answered {getTimestamp(answer.createdAt)}
                     </p>
                   </div>
                 </Link>

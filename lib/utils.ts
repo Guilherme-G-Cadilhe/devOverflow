@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getTimesamp = (createdAt: Date): string => {
+export const getTimestamp = (createdAt: Date): string => {
   const currentDate = new Date();
   const timeDifference = currentDate.getTime() - createdAt.getTime();
 
@@ -45,4 +45,13 @@ export const formatNumberWithExtension = (number: number): string => {
     // For smaller numbers, no extension needed
     return number.toString();
   }
+};
+
+export const getJoinedDate = (date: Date): string => {
+  // Get month and year from the Date object
+  const month = date.toLocaleDateString("default", { month: "long" });
+  const year = date.getFullYear();
+
+  const formattedDate = `${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
+  return formattedDate;
 };
