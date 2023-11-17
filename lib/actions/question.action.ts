@@ -3,13 +3,21 @@
 import { connectToDatabase } from "../mongoose";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
-import { CreateQuestionParams, GetQuestionByIdParams, GetQuestionsParams, QuestionVoteParams } from "./shared.types";
+import {
+  CreateQuestionParams,
+  DeleteQuestionParams,
+  GetQuestionByIdParams,
+  GetQuestionsParams,
+  QuestionVoteParams,
+} from "./shared.types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
+import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const questions = await Question.find({})
       .populate({ path: "tags", model: Tag })
@@ -23,9 +31,26 @@ export async function getQuestions(params: GetQuestionsParams) {
   }
 }
 
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  try {
+    await connectToDatabase();
+
+    const { questionId, path } = params;
+
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ question: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany({ questions: questionId }, { $pull: { questions: questionId } });
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log("error deleteQuestion :>> ", error);
+  }
+}
+
 export async function createQuestion(params: CreateQuestionParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { title, content, tags, author, path } = params;
 
@@ -57,7 +82,7 @@ export async function createQuestion(params: CreateQuestionParams) {
 
 export async function getQuestionById(params: GetQuestionByIdParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { questionId } = params;
     const question = await Question.findById(questionId)
       .populate({ path: "tags", model: Tag, select: "_id name" })
@@ -72,7 +97,7 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
 
 export async function upvoteQuestion(params: QuestionVoteParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
 
     let updateQuery = {};
@@ -103,7 +128,7 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
 
 export async function downvoteQuestion(params: QuestionVoteParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
 
     let updateQuery = {};

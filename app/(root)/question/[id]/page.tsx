@@ -6,18 +6,13 @@ import Votes from "@/components/shared/Votes";
 import RenderTag from "@/components/shared/renderTag/RenderTag";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserByClerkId } from "@/lib/actions/user.action";
-import { formatNumberWithExtension, getTimesamp } from "@/lib/utils";
+import { formatNumberWithExtension, getTimestamp } from "@/lib/utils";
+import { URLProps } from "@/types";
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
-const QuestionDetails = async ({
-  params,
-  searchParams,
-}: {
-  params: { id: string };
-  searchParams: { [key: string]: string };
-}) => {
+const QuestionDetails = async ({ params, searchParams }: URLProps) => {
   const { id } = params;
 
   const { userId: clerkId } = auth();
@@ -45,7 +40,7 @@ const QuestionDetails = async ({
               hasupVoted={result.upvotes.includes(mongoUser?._id)}
               downvotes={result.downvotes.length}
               hasdownVoted={result.downvotes.includes(mongoUser?._id)}
-              hasSaved={mongoUser.saved.includes(result?._id)}
+              hasSaved={mongoUser?.saved.includes(result?._id)}
             />
           </div>
         </div>
@@ -56,7 +51,7 @@ const QuestionDetails = async ({
           imgUrl="/assets/icons/clock.svg"
           href=""
           alt="Clock Icon"
-          value={`Asked ${getTimesamp(result.createdAt)}`}
+          value={`Asked ${getTimestamp(result.createdAt)}`}
           title=""
           textStyles="small-medium text-dark400_light800"
         />
@@ -85,12 +80,12 @@ const QuestionDetails = async ({
         ))}
       </div>
 
-      <AllAnswers questionId={result._id} userId={mongoUser._id} totalAnswers={result.answers.length} />
+      <AllAnswers questionId={result._id} userId={mongoUser?._id} totalAnswers={result.answers.length} />
 
       <Answer
         question={result.content}
         questionId={JSON.stringify(result._id)}
-        authorId={JSON.stringify(mongoUser._id)}
+        authorId={JSON.stringify(mongoUser?._id)}
       />
     </>
   );

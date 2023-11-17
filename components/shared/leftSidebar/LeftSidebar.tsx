@@ -2,16 +2,28 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { CSidebarLinks } from "@/constants";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 const NavContent = () => {
   const pathname = usePathname();
+  const { userId } = useAuth();
+  if (!userId) redirect("/sign-in");
+
   return (
     <div className="flex flex-1 flex-col gap-6">
       {CSidebarLinks.map((item) => {
         const isActive = (pathname.includes(item.route) && item.route.length > 1) || pathname === item.route;
+
+        if (item.route === "/profile") {
+          if (userId) {
+            item.route = `/profile/${userId}`;
+          } else {
+            return null;
+          }
+        }
+
         return (
           <Link
             key={item.label}

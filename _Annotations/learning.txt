@@ -19,3 +19,9 @@
  - Creating complex forms with custom validation and typing
 - TinyMCE open source rich text edito
 - Vercel Deploy and Configurations
+- Interactions System
+ - View Interactions
+ - Ranking and Karma System
+- Profile
+ - Editing and customizing Profile
+ - Viewing and Editing/Deleting Answers and Questions
