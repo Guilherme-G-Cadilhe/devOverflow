@@ -35,7 +35,6 @@ const Answer = ({ question, questionId, authorId }: AnswerProps) => {
   const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
     setIsSubmitting(true);
     try {
-      console.log("values :>> ", values);
       await createAnswer({
         content: values.answer,
         author: JSON.parse(authorId),

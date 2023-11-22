@@ -14,6 +14,7 @@ import Link from "next/link";
 
 const QuestionDetails = async ({ params, searchParams }: URLProps) => {
   const { id } = params;
+  const { filter, page } = searchParams;
 
   const { userId: clerkId } = auth();
 
@@ -80,7 +81,13 @@ const QuestionDetails = async ({ params, searchParams }: URLProps) => {
         ))}
       </div>
 
-      <AllAnswers questionId={result._id} userId={mongoUser?._id} totalAnswers={result.answers.length} />
+      <AllAnswers
+        questionId={result._id}
+        userId={mongoUser?._id}
+        filter={filter}
+        page={page}
+        totalAnswers={result.answers.length}
+      />
 
       <Answer
         question={result.content}

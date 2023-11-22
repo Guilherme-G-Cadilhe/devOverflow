@@ -31,9 +31,31 @@ export async function getAllTags(params: GetAllTagsParams) {
   try {
     await connectToDatabase();
 
+    const { searchQuery, filter } = params;
+    const query: FilterQuery<typeof Tag> = searchQuery ? { name: { $regex: new RegExp(searchQuery, "i") } } : {};
+
+    let sortOptions = {};
+    switch (filter) {
+      case "popular":
+        sortOptions = { questions: -1 };
+        break;
+      case "recent":
+        sortOptions = { createdOn: -1 };
+        break;
+      case "name":
+        sortOptions = { name: -1 };
+        break;
+      case "old":
+        sortOptions = { createdOn: 1 };
+        break;
+
+      default:
+        break;
+    }
+
     // const { page = 1, pageSize = 20, filter, searchQuery } = params;
 
-    const tags = await Tag.find({}).sort({ createdAt: -1 });
+    const tags = await Tag.find(query).sort(sortOptions);
 
     return { tags };
   } catch (error) {
@@ -70,6 +92,23 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     return { tagTitle: tag.name, questions };
   } catch (error) {
     console.log("error  getQuestionsByTagId:>> ", error);
+    throw error;
+  }
+}
+
+export async function getTopPopularTags() {
+  try {
+    await connectToDatabase();
+
+    const popularTags = await Tag.aggregate([
+      { $project: { _id: 1, name: 1, totalQuestions: { $size: "$questions" } } },
+      { $sort: { totalQuestions: -1 } },
+      { $limit: 5 },
+    ]);
+
+    return popularTags;
+  } catch (error) {
+    console.log("error  getAllTags:>> ", error);
     throw error;
   }
 }
