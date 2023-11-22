@@ -3,10 +3,11 @@ import Filter from "@/components/shared/filter/Filter";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { CTagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.actions";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
-async function Tags() {
-  const result = await getAllTags({});
+async function Tags({ searchParams }: SearchParamsProps) {
+  const result = await getAllTags({ searchQuery: searchParams.q, filter: searchParams.filter });
 
   return (
     <>

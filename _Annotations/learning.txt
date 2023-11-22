@@ -3,25 +3,36 @@
  - Middleware Configuration for routes
  - Action Servers instead of API's server-side
  - Complex and Efficient Routing with Layouts for filtering permission, data and more
+
 - Webhooks Creation Endpoint
 - MongoDB and Mongoose
  - Creating Models and Interacting directly with Schemas and Docs
+
 - Tailwind CSS
  - Custom Classes
  - Plugins and merging different style files
  - Dynamic Theme switching on website
+
 - ShadCN Components configurations
+
 - Eslint configurations
+
 - Typescript configurations
  - .d files for Types, Functions and more
+
 - Clerk Auth configuration and installation
+
 - React-Hook-Form + Zod
  - Creating complex forms with custom validation and typing
+
 - TinyMCE open source rich text edito
+
 - Vercel Deploy and Configurations
+
 - Interactions System
  - View Interactions
  - Ranking and Karma System
+ 
 - Profile
  - Editing and customizing Profile
  - Viewing and Editing/Deleting Answers and Questions
