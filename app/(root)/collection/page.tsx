@@ -1,5 +1,6 @@
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import Filter from "@/components/shared/filter/Filter";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { CQuestionFilters } from "@/constants/filters";
@@ -12,7 +13,13 @@ const Collection = async ({ searchParams }: SearchParamsProps) => {
   const { userId: clerkId } = auth();
   if (!clerkId) redirect("/sign-in");
 
-  const results = await getSavedQuestions({ clerkId, searchQuery: searchParams.q, filter: searchParams.filter });
+  const results = await getSavedQuestions({
+    clerkId,
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+    pageSize: searchParams.pageSize ? +searchParams.pageSize : 10,
+  });
 
   return (
     <>
@@ -33,8 +40,8 @@ const Collection = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
       <div className="mt-10 flex w-full flex-col gap-6">
-        {results.saved.length > 0 ? (
-          results.saved.map((question: any) => (
+        {results.questions.length > 0 ? (
+          results.questions.map((question: any) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
@@ -55,6 +62,9 @@ const Collection = async ({ searchParams }: SearchParamsProps) => {
             linkTitle="Find Questions"
           />
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination pageNumber={searchParams?.page ? +searchParams.page : 1} isNext={results?.isNext} />
       </div>
     </>
   );
