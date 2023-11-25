@@ -56,8 +56,10 @@ export async function getAllUsers(params: GetAllUsersParams) {
   try {
     await connectToDatabase();
 
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
     const query: FilterQuery<typeof Question> = {};
+
+    const skipAmount = (page - 1) * pageSize;
 
     if (searchQuery) {
       query.$or = [
@@ -83,9 +85,12 @@ export async function getAllUsers(params: GetAllUsersParams) {
     }
     // const { page = 1, pageSize = 20, filter, searchQuery } = params;
 
-    const users: IUser[] = await User.find(query).sort(sortOptions);
+    const users: IUser[] = await User.find(query).sort(sortOptions).skip(skipAmount).limit(pageSize);
 
-    return { users };
+    const totalUsers = await User.countDocuments(query);
+    const isNext = totalUsers > skipAmount + users.length;
+
+    return { users, isNext };
   } catch (error) {
     console.log("error  getAllUsers:>> ", error);
     throw error;
@@ -178,10 +183,11 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   try {
     await connectToDatabase();
 
-    // const { clerkId, page = 1, pageSize = 10, filter, searchQuery } = params;
-    const { clerkId, searchQuery, filter } = params;
+    const { clerkId, searchQuery, filter, page = 1, pageSize = 10 } = params;
 
     const query: FilterQuery<typeof User> = searchQuery ? { title: { $regex: new RegExp(searchQuery, "i") } } : {};
+
+    const skipAmount = (page - 1) * pageSize;
 
     let sortOptions = {};
     switch (filter) {
@@ -211,6 +217,8 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       model: Question,
       options: {
         sort: sortOptions,
+        skip: skipAmount,
+        limit: pageSize,
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },
@@ -218,7 +226,16 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       ],
     });
     if (!user) throw new Error("User not found");
-    return user;
+
+    const savedQuestionsCount = await User.aggregate([
+      { $match: { clerkId } },
+      { $project: { savedQuestionsCount: { $size: "$saved" } } },
+    ]);
+    const totalSaved = savedQuestionsCount[0]?.savedQuestionsCount || 0;
+    const savedQuestions = user.saved;
+
+    const isNext = totalSaved > skipAmount + savedQuestions.length;
+    return { questions: savedQuestions, isNext };
   } catch (error) {
     console.log("error  GetSavedQuestions:>> ", error);
     throw error;
@@ -229,16 +246,18 @@ export async function getUserQuestions(params: GetUserStatsParams) {
     await connectToDatabase();
 
     const { userId, page = 1, pageSize = 10 } = params;
+    const skipAmount = (page - 1) * pageSize;
 
     const totalQuestions = await Question.countDocuments({ author: userId });
     const userQuestions = await Question.find({ author: userId })
       .sort({ views: -1, upvotes: -1 })
+      .skip(skipAmount)
+      .limit(pageSize)
       .populate("tags", "_id name")
-      .populate("author", "_id clerkId name picture")
-      .skip((page - 1) * pageSize)
-      .limit(pageSize);
+      .populate("author", "_id clerkId name picture");
 
-    return { totalQuestions, questions: userQuestions };
+    const isNext = totalQuestions > skipAmount + userQuestions.length;
+    return { totalQuestions, questions: userQuestions, isNext };
   } catch (error) {
     console.log("error  getUserQuestions:>> ", error);
     throw error;

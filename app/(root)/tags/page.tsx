@@ -1,4 +1,5 @@
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import Filter from "@/components/shared/filter/Filter";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { CTagFilters } from "@/constants/filters";
@@ -7,7 +8,12 @@ import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
 async function Tags({ searchParams }: SearchParamsProps) {
-  const result = await getAllTags({ searchQuery: searchParams.q, filter: searchParams.filter });
+  const result = await getAllTags({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+    pageSize: searchParams.pageSize ? +searchParams.pageSize : 10,
+  });
 
   return (
     <>
@@ -50,6 +56,9 @@ async function Tags({ searchParams }: SearchParamsProps) {
           />
         )}
       </section>
+      <div className="mt-10">
+        <Pagination pageNumber={searchParams?.page ? +searchParams.page : 1} isNext={result?.isNext} />
+      </div>
     </>
   );
 }
