@@ -65,7 +65,11 @@ const ProfileDetails = async ({ params, searchParams }: URLProps) => {
         </div>
       </div>
 
-      <Stats totalQuestions={userInfo.totalQuestions} totalAnswers={userInfo.totalAnswers} />
+      <Stats
+        totalQuestions={userInfo.totalQuestions}
+        totalAnswers={userInfo.totalAnswers}
+        badges={userInfo.badgeCounts}
+      />
 
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="flex-1">
