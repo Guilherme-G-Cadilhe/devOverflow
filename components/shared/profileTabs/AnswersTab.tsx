@@ -1,6 +1,7 @@
 import AnswerCard from "@/components/cards/AnswerCard";
 import { getUserAnswers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
+import Pagination from "../Pagination";
 
 interface AnswersTabProps extends SearchParamsProps {
   userId: string;
@@ -8,7 +9,11 @@ interface AnswersTabProps extends SearchParamsProps {
 }
 
 const AnswersTab = async ({ searchParams, userId, clerkId }: AnswersTabProps) => {
-  const result = await getUserAnswers({ userId, page: 1 });
+  const result = await getUserAnswers({
+    userId,
+    page: searchParams.page ? +searchParams.page : 1,
+    pageSize: searchParams.pageSize ? +searchParams.pageSize : 5,
+  });
 
   return (
     <>
@@ -23,6 +28,7 @@ const AnswersTab = async ({ searchParams, userId, clerkId }: AnswersTabProps) =>
           createdAt={answer.createdAt}
         />
       ))}
+      <Pagination pageNumber={searchParams?.page ? +searchParams.page : 1} isNext={result?.isNext} />
     </>
   );
 };

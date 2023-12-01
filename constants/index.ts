@@ -66,7 +66,7 @@ export const CBADGE_CRITERIA = {
     GOLD: 100,
   },
   TOTAL_VIEWS: {
-    BRONZE: 1000,
+    BRONZE: 20,
     SILVER: 10000,
     GOLD: 100000,
   },
