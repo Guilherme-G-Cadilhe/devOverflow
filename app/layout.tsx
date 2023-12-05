@@ -20,7 +20,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Dev Overflow",
+  title: "Dev Overflow Bobnini | Home Page",
   description: "An open-source Stack Overflow clone for programmers to ask, answer, and collaborate.",
   icons: {
     icon: "/assets/images/site-logo.svg",

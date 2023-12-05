@@ -8,6 +8,7 @@ import { formatNumberWithExtension } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "../ui/use-toast";
 
 interface VotesProps {
   type: string;
@@ -26,7 +27,10 @@ const Votes = ({ type, itemId, userId, upvotes, hasupVoted, downvotes, hasdownVo
 
   const handleVote = async (action: string) => {
     if (!userId) {
-      return;
+      return toast({
+        title: "Please Log in",
+        description: "You must be logged in to perform this action",
+      });
     }
 
     if (action === "upvote") {
@@ -47,6 +51,11 @@ const Votes = ({ type, itemId, userId, upvotes, hasupVoted, downvotes, hasdownVo
           path: pathname,
         });
       }
+
+      return toast({
+        title: `Upvote ${!hasupVoted ? "Sucessful" : "Removed"}`,
+        variant: !hasupVoted ? "default" : "destructive",
+      });
     } else if (action === "downvote") {
       if (type === "Question") {
         await downvoteQuestion({
@@ -65,6 +74,10 @@ const Votes = ({ type, itemId, userId, upvotes, hasupVoted, downvotes, hasdownVo
           path: pathname,
         });
       }
+      return toast({
+        title: `Downvote ${!hasupVoted ? "Sucessful" : "Removed"}`,
+        variant: !hasupVoted ? "default" : "destructive",
+      });
     }
   };
 
@@ -76,6 +89,10 @@ const Votes = ({ type, itemId, userId, upvotes, hasupVoted, downvotes, hasdownVo
         path: pathname,
       });
     }
+    return toast({
+      title: `Question ${!hasSaved ? "Saved in" : "Removed from"} your collection`,
+      variant: !hasSaved ? "default" : "destructive",
+    });
   };
 
   useEffect(() => {

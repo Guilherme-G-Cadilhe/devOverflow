@@ -1,0 +1,35 @@
+export const metadata: Metadata = {
+  metadataBase: new URL('https://github.com/Guilherme-G-Cadilhe'),
+  title: {
+    default: 'Guilherme Cadilhe',
+    template: '%s | Guilherme Cadilhe',
+  },
+  description: 'Developer, and creator.',
+  openGraph: {
+    title: 'Guilherme Cadilhe',
+    description: 'Developer, and creator.',
+    url: 'https://github.com/Guilherme-G-Cadilhe',
+    siteName: 'Guilherme Cadilhe',
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  twitter: {
+    title: 'Guilherme Cadilhe',
+    card: 'summary_large_image',
+  },
+  verification: {
+    google: 'eZSdmzAXlLkKhNJzfgwDqWORghxnJ8qR9_CHdAh5-xw',
+    yandex: '14d2e73487fa6c71',
+  },
+};
