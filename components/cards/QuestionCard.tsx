@@ -58,30 +58,33 @@ function QuestionCard({ _id, clerkId, title, tags, author, createdAt, upvotes, a
           textStyles="body-medium text-dark400_light700"
           isAuthor
         />
-        <Metric
-          imgUrl="/assets/icons/like.svg"
-          href=""
-          alt="Upvotes"
-          value={formatNumberWithExtension(upvotes.length)}
-          title="Upvotes"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/message.svg"
-          href=""
-          alt="Message"
-          value={formatNumberWithExtension(answers.length)}
-          title="Answers"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/eye.svg"
-          href=""
-          alt="Eye"
-          value={formatNumberWithExtension(views)}
-          title="Views"
-          textStyles="small-medium text-dark400_light800"
-        />
+
+        <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
+          <Metric
+            imgUrl="/assets/icons/like.svg"
+            href=""
+            alt="Upvotes"
+            value={formatNumberWithExtension(upvotes.length)}
+            title="Upvotes"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/assets/icons/message.svg"
+            href=""
+            alt="Message"
+            value={formatNumberWithExtension(answers.length)}
+            title="Answers"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/assets/icons/eye.svg"
+            href=""
+            alt="Eye"
+            value={formatNumberWithExtension(views)}
+            title="Views"
+            textStyles="small-medium text-dark400_light800"
+          />
+        </div>
       </div>
     </div>
   );

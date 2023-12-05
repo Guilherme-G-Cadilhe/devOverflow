@@ -38,10 +38,14 @@ function Filter({ filterOptions = [], placeholder, otherClasses, containerClasse
             <SelectValue placeholder={placeholder} />
           </div>
         </SelectTrigger>
-        <SelectContent className="background-light900_dark200">
+        <SelectContent className=" text-dark500_light700 small-regular background-light900_dark200 border-none">
           <SelectGroup>
             {filterOptions.map((options) => (
-              <SelectItem key={options.value} value={options.value}>
+              <SelectItem
+                className="cursor-pointer focus:bg-light-800 dark:focus:bg-dark-400"
+                key={options.value}
+                value={options.value}
+              >
                 {options.name}
               </SelectItem>
             ))}
