@@ -32,6 +32,10 @@ module.exports = {
           400: "#858EAD",
         },
         "accent-blue": "#1DA1F2",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
       },
       fontFamily: {
         inter: ["var(--font-inter)"],

@@ -6,11 +6,12 @@ import Filter from "@/components/shared/filter/Filter";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { CHomePageFilters } from "@/constants/filters";
-import { getQuestions } from "@/lib/actions/question.action";
+import { getQuestions, getRecommendedQuestions } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
 import type { Metadata } from "next";
+import { auth } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Home | Bobnini Overflow",
@@ -18,12 +19,32 @@ export const metadata: Metadata = {
 };
 
 export default async function Home({ searchParams }: SearchParamsProps) {
-  const resultQuery = await getQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
-    pageSize: searchParams.pageSize ? +searchParams.pageSize : 10,
-  });
+  const { userId } = auth();
+
+  let resultQuery;
+
+  if (searchParams?.filter === "recommended") {
+    if (userId) {
+      resultQuery = await getRecommendedQuestions({
+        userId,
+        searchQuery: searchParams.q,
+        page: searchParams.page ? +searchParams.page : 1,
+        pageSize: searchParams.pageSize ? +searchParams.pageSize : 10,
+      });
+    } else {
+      resultQuery = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    resultQuery = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams.page ? +searchParams.page : 1,
+      pageSize: searchParams.pageSize ? +searchParams.pageSize : 10,
+    });
+  }
 
   return (
     <>
