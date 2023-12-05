@@ -99,5 +99,7 @@ export async function POST(req: Request) {
     });
   }
 
-  return new Response("", { status: 200 });
+  return NextResponse.json({
+    message: "OK",
+  });
 }
