@@ -10,6 +10,13 @@ import { getQuestions } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | Bobnini Overflow",
+  description: "Home Page of Bobnini Overflow",
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const resultQuery = await getQuestions({
     searchQuery: searchParams.q,

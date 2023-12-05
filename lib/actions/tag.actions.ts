@@ -20,7 +20,6 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     if (!user) {
       throw new Error("User not found");
     }
-    console.log(user);
 
     // Find interactions for the user and group by tags
     const tagCountMap = await Interaction.aggregate([
