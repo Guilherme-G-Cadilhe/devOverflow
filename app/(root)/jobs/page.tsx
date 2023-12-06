@@ -17,7 +17,6 @@ interface Props {
 const Page = async ({ searchParams }: Props) => {
   const userLocation = await fetchLocation();
 
-  console.log("searchParams.location :>> ", searchParams.location);
   const jobs = await fetchJobs({
     query:
       searchParams.q || searchParams.location
